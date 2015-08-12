@@ -6,6 +6,7 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'activerecord'
 gem 'sinatra-activerecord'
+gem 'sinatra-flash'
 
 group :development do
   gem 'sqlite3'

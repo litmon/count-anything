@@ -6,6 +6,31 @@
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
 </head>
 <body>
+  <h1>なんでもカウント</h1>
+
+  <p class="message"><%= flash[:message] %></p>
+
+  <% @counts.each do |count| %>
+    <div class="count">
+      <p><%= count.name %></p>
+      <p><%= count.number %></p>
+
+      <form method="post" action="/<%= count.id %>/count_up" name="count_up">
+        <input type="submit" value="+1">
+      </form>
+
+      <form method="post" action="/<%= count.id %>/destroy" name="destroy_count">
+        <input type="submit" value="delete">
+      </form>
+    </div>
+  <% end %>
+
+
+  <form method="post" action="/create">
+    <input type="text" name="name">
+    <input type="file" name="image">
+    <input type="submit" value="create">
+  </form>
 
 </body>
 </html>
