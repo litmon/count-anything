@@ -1,9 +1,19 @@
 require 'pry-byebug'
 require 'bundler/setup'
 Bundler.require
-require 'sinatra/reloader' if development?
-require './models/count.rb'
 require 'sinatra/flash'
+require 'sinatra/reloader' if development?
+
+require './models/count'
+require './image_uploader'
+
+Dotenv.load
+
+Cloudinary.config do |config|
+  config.cloud_name = ENV['CLOUD_NAME']
+  config.api_key    = ENV['CLOUDINARY_API_KEY']
+  config.api_secret = ENV['CLOUDINARY_API_SECRET']
+end
 
 enable :sessions
 
@@ -16,6 +26,8 @@ post '/create' do
   @count = Count.create(
     name: params[:name],
   )
+
+  image_upload(@count, :image, params[:image])
 
   if @count.save
     flash[:message] = "Create Successfully!"
@@ -36,7 +48,10 @@ end
 
 post '/:id/update' do
   @count = Count.find_by(id: params[:id])
-  @count.try(:update, count_params)
+  if @count
+    @count.update(name: params[:name]) if params[:name]
+    image_upload(@count, :image, params[:image])
+  end
 
   redirect '/'
 end
