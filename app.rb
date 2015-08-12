@@ -19,7 +19,6 @@ post '/create' do
 
   if @count.save
     flash[:message] = "Create Successfully!"
-    byebug
     redirect '/'
   else
     flash[:message] = "Invalid name. Please input name!"
