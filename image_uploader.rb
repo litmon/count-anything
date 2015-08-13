@@ -1,10 +1,12 @@
 def image_upload(model, column, img)
-  logger.info "upload now"
-  tempfile = img[:tempfile]
+  if img
+    logger.info "upload now"
+    tempfile = img[:tempfile]
 
-  upload = Cloudinary::Uploader.upload(tempfile.path)
+    upload = Cloudinary::Uploader.upload(tempfile.path)
 
-  model.update_attribute(column, upload['url'])
+    model.update_attribute(column, upload['url'])
+  end
 end
 
 def image_upload_local(model, column, img)

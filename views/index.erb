@@ -1,37 +1,53 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>Document</title>
-  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-</head>
-<body>
-  <h1>なんでもカウント</h1>
+  <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/count.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/js/index.js"></script>
+  </head>
+  <body>
+    <h1 class="title">なんでもカウント</h1>
 
-  <p class="message"><%= flash[:message] %></p>
+    <p class="message"><%= flash[:message] %></p>
 
-  <% @counts.each do |count| %>
-    <div class="count">
-      <p><%= count.name %></p>
-      <p><%= count.number %></p>
+    <% @counts.each do |count| %>
+      <div class="count">
+        <p class="name"><%= count.name %></p>
+        <div class="wrapper">
+          <% if count.image.present? %>
+            <img src="<%= count.image %>" height="150px" class="content">
+          <% end %> 
+          <p class="number"><%= count.number %></p>
+          <form method="post" action="/<%= count.id %>/count_up" name="count_up">
+            <input type="submit" value="+1" class="count_up">
+          </form>
+          <form method="post" action="/<%= count.id %>/count_down" name="count_down">
+            <input type="submit" value="-1" class="count_down">
+          </form>
+        </div>
 
-      <img src="<%= count.image %>" height="150px">
+        <form method="post" action="/<%= count.id %>/destroy" name="destroy_count" class="delete">
+          <input type="submit" value="x" onClick="return confirm("本当に削除しますか？");">
+        </form>
+      </div>
 
-      <form method="post" action="/<%= count.id %>/count_up" name="count_up">
-        <input type="submit" value="+1">
-      </form>
-
-      <form method="post" action="/<%= count.id %>/destroy" name="destroy_count">
-        <input type="submit" value="delete">
+    <% end %>
+    <div class="count upload">
+      <form method="post" action="/create" enctype="multipart/form-data">
+        <input type="text" name="name" class="name" placeholder="title">
+        <label for="image" class="wrapper">
+          <div class="dummy">
+            <i class="fa fa-picture-o fa-5x"></i>
+            <img id="preview" class="content">
+          </div>
+          <input type="file" name="image" id="image">
+        </label>
+        <input type="submit" value="create" class="btn_create">
       </form>
     </div>
-  <% end %>
-
-  <form method="post" action="/create" enctype="multipart/form-data">
-    <input type="text" name="name">
-    <input type="file" name="image">
-    <input type="submit" value="create">
-  </form>
-
-</body>
+  </body>
 </html>

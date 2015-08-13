@@ -46,6 +46,14 @@ post '/:id/count_up' do
   redirect '/'
 end
 
+post '/:id/count_down' do
+  @count = Count.find(params[:id])
+  @count.number -= 1
+
+  @count.save
+  redirect '/'
+end
+
 post '/:id/update' do
   @count = Count.find_by(id: params[:id])
   if @count
