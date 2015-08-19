@@ -23,9 +23,7 @@ get '/' do
 end
 
 post '/create' do
-  @count = Count.create(
-    name: params[:name],
-  )
+  @count = Count.create(name: params[:name])
 
   image_upload(@count, :image, params[:image])
 
